@@ -1,8 +1,8 @@
-import { startCreating, buildSetup } from '../../core/hashlips/src/main'
+import { startCreating } from '../../core/hashlips/src/main'
 
 export default async function handler(req, res) {
   try {
-    buildSetup()
+    // buildSetup()
     const result = await startCreating()
     res.status(200).json({ result })
   } catch {

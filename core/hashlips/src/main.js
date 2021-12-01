@@ -401,8 +401,8 @@ const startCreating = async () => {
             const imageBase64 = canvas.toDataURL()
             const metadata = addMetadata(newDna, abstractedIndexes[0])
 
-            saveImage(abstractedIndexes[0]);
-            saveMetaDataSingleFile(abstractedIndexes[0])
+            // saveImage(sha1(newDna));
+            // saveMetaDataSingleFile(abstractedIndexes[0])
 
             return { image: imageBase64, metadata }
           }
@@ -426,7 +426,7 @@ const startCreating = async () => {
     }
     layerConfigIndex++
   }
-  writeMetaData(JSON.stringify(metadataList, null, 2))
+  // writeMetaData(JSON.stringify(metadataList, null, 2))
   return result
 }
 
