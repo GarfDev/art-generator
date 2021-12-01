@@ -3,6 +3,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "postinstall": "yarn husky install && yarn husky add .husky/pre-commit \"yarn eslint --fix . && yarn prettier --write .\"",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
