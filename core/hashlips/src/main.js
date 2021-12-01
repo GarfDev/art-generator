@@ -430,3 +430,4 @@ const startCreating = async () => {
 }
 
 module.exports = { startCreating, buildSetup, getElements }
+export { startCreating, buildSetup, getElements }

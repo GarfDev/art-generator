@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "postinstall": "yarn husky install && yarn husky add .husky/pre-commit \"yarn eslint --fix . && yarn prettier --write .\"",
+    "postinstall": "yarn husky install && yarn husky add .husky/pre-commit \"yarn lint-staged",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -17,10 +17,14 @@
     "sha1": "^1.1.1"
   },
   "devDependencies": {
+    "@types/react": "^17.0.37",
+    "@typescript-eslint/eslint-plugin": "^5.5.0",
     "eslint": "7",
     "eslint-config-next": "12.0.4",
     "eslint-config-prettier": "^8.3.0",
     "husky": "^7.0.4",
-    "prettier": "^2.5.0"
+    "lint-staged": "^12.1.2",
+    "prettier": "^2.5.0",
+    "typescript": "^4.5.2"
   }
 }
