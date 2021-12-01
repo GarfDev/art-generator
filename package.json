@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "preinstall": "yarn husky install && yarn husky add .husky/pre-commit \"yarn lint-staged\"",
+    "setup": "yarn && yarn husky install && yarn husky add .husky/pre-commit \"yarn lint-staged\"",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
