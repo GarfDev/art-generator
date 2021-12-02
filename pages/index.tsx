@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import Head from 'next/head'
 import Image from 'next/image'
 
-import { LayerConfig } from '../core/types'
+import { Layer, LayerConfig } from '../core/types'
 
 import { ListItem } from '../core/components/ListItem'
 
@@ -12,13 +12,13 @@ const initialLayerConfig: LayerConfig = {
   growEditionSizeTo: 5,
   archivedLayers: [],
   layersOrder: [
-    { name: 'Background', active: true },
-    { name: 'Eyeball', active: true },
-    { name: 'Eye color', active: true },
-    { name: 'Iris', active: true },
-    { name: 'Shine', active: true },
-    { name: 'Bottom lid', active: true },
-    { name: 'Top lid', active: true },
+    { name: 'Background', options: { opacity: 1 } },
+    { name: 'Eyeball', options: { opacity: 1 } },
+    { name: 'Eye color', options: { opacity: 1 } },
+    { name: 'Iris', options: { opacity: 1 } },
+    { name: 'Shine', options: { opacity: 1 } },
+    { name: 'Bottom lid', options: { opacity: 1 } },
+    { name: 'Top lid', options: { opacity: 1 } },
   ],
 }
 
@@ -75,7 +75,7 @@ export default function Home() {
 
           <Section>
             <ConfigGrid>
-              {layerConfigs.map((layerConfig, index) => {
+              {layerConfigs.map((config, index) => {
                 const onGrowSizeChange = (
                   event: React.ChangeEvent<HTMLInputElement>
                 ) => {
@@ -90,12 +90,15 @@ export default function Home() {
                   )
                 }
 
-                const movePetListItem = (dragIndex, hoverIndex) => {
-                  const dragItem = layerConfig.layersOrder[dragIndex]
-                  const hoverItem = layerConfig.layersOrder[hoverIndex]
+                const movePetListItem = (
+                  dragIndex: number,
+                  hoverIndex: number
+                ) => {
+                  const dragItem = config.layersOrder[dragIndex]
+                  const hoverItem = config.layersOrder[hoverIndex]
                   // Swap places of dragItem and hoverItem in the pets array
-                  const updatedConfig = { ...layerConfig }
-                  const updatedLayers = [...layerConfig.layersOrder]
+                  const updatedConfig = { ...config }
+                  const updatedLayers = [...config.layersOrder]
 
                   updatedLayers[dragIndex] = hoverItem
                   updatedLayers[hoverIndex] = dragItem
@@ -108,23 +111,37 @@ export default function Home() {
                   )
                 }
 
+                const onLayerChange = (updatedLayer: Layer) => {
+                  const nextConfig = { ...config }
+
+                  nextConfig.layersOrder = nextConfig.layersOrder.map((layer) =>
+                    layer.name === updatedLayer.name ? updatedLayer : layer
+                  )
+                  setLayerConfigs(
+                    layerConfigs.map((config, innerIndex) =>
+                      innerIndex === index ? nextConfig : config
+                    )
+                  )
+                }
+
                 return (
                   <ConfigContainer key={`main-config-layer-${index}`}>
                     <div>
                       Currently generate up to{' '}
                       <GrowSizeInput
-                        value={layerConfig.growEditionSizeTo}
+                        value={config.growEditionSizeTo}
                         onChange={onGrowSizeChange}
                       />
                     </div>
                     <h3>Active Layers</h3>
                     <div>
-                      {layerConfig.layersOrder.map((layer, index) => (
+                      {config.layersOrder.map((layer, index) => (
                         <ListItem
+                          layer={layer}
                           key={index + layer.name}
                           index={index}
-                          text={layer.name}
                           moveListItem={movePetListItem}
+                          onLayerChange={onLayerChange}
                         />
                       ))}
                     </div>
