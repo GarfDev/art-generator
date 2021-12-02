@@ -11,7 +11,6 @@ const {
   description,
   background,
   uniqueDnaTorrance,
-  layerConfigurations,
   rarityDelimiter,
   shuffleLayerConfigurations,
   debugLogs,
@@ -330,7 +329,7 @@ function shuffle(array) {
   return array
 }
 
-const startCreating = async () => {
+const startCreating = async (layerConfigurations) => {
   let result = []
   let layerConfigIndex = 0
   let editionCount = 1
