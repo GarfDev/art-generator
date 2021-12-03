@@ -6,7 +6,11 @@ export default async function handler(req, res) {
     const body = JSON.parse(req.body)
     // buildSetup()
 
-    let result = await startCreating(body.layerConfigs)
+    let result = await startCreating(body.layerConfigs, {
+      repeat: 1,
+      quality: 100,
+      delay: 500,
+    })
 
     // upload images to imgur
     const imgUrls = await Promise.all(result.map((item) => upload(item.image)))

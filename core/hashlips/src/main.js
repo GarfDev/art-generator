@@ -19,7 +19,6 @@ const {
   namePrefix,
   network,
   solanaMetadata,
-  gif,
 } = require(`./config.js`)
 
 const canvas = createCanvas(format.width, format.height)
@@ -40,7 +39,7 @@ const buildSetup = () => {
   fs.mkdirSync(buildDir)
   fs.mkdirSync(`${buildDir}/json`)
   fs.mkdirSync(`${buildDir}/images`)
-  if (gif.export) {
+  if (gif) {
     fs.mkdirSync(`${buildDir}/gifs`)
   }
 }
@@ -198,18 +197,18 @@ const drawElement = (_renderObject, _index, _layersLen) => {
   ctx.globalCompositeOperation = _renderObject.layer.blend
   text.only
     ? addText(
-        `${_renderObject.layer.name}${text.spacer}${_renderObject.layer.selectedElement.name}`,
-        text.xGap,
-        text.yGap * (_index + 1),
-        text.size
-      )
+      `${_renderObject.layer.name}${text.spacer}${_renderObject.layer.selectedElement.name}`,
+      text.xGap,
+      text.yGap * (_index + 1),
+      text.size
+    )
     : ctx.drawImage(
-        _renderObject.loadedImage,
-        0,
-        0,
-        format.width,
-        format.height
-      )
+      _renderObject.loadedImage,
+      0,
+      0,
+      format.width,
+      format.height
+    )
 
   addAttributes(_renderObject)
 }
@@ -288,8 +287,7 @@ const createDna = (_layers) => {
       random -= layer.elements[i].weight
       if (random < 0) {
         return randNum.push(
-          `${layer.elements[i].id}:${layer.elements[i].filename}${
-            layer.bypassDNA ? '?bypassDNA=true' : ''
+          `${layer.elements[i].id}:${layer.elements[i].filename}${layer.bypassDNA ? '?bypassDNA=true' : ''
           }`
         )
       }
@@ -306,8 +304,8 @@ const saveMetaDataSingleFile = (_editionCount) => {
   let metadata = metadataList.find((meta) => meta.edition == _editionCount)
   debugLogs
     ? console.log(
-        `Writing metadata for ${_editionCount}: ${JSON.stringify(metadata)}`
-      )
+      `Writing metadata for ${_editionCount}: ${JSON.stringify(metadata)}`
+    )
     : null
   fs.writeFileSync(
     `${buildDir}/json/${_editionCount}.json`,
@@ -321,15 +319,15 @@ function shuffle(array) {
   while (currentIndex != 0) {
     randomIndex = Math.floor(Math.random() * currentIndex)
     currentIndex--
-    ;[array[currentIndex], array[randomIndex]] = [
-      array[randomIndex],
-      array[currentIndex],
-    ]
+      ;[array[currentIndex], array[randomIndex]] = [
+        array[randomIndex],
+        array[currentIndex],
+      ]
   }
   return array
 }
 
-const startCreating = async (layerConfigurations) => {
+const startCreating = async (layerConfigurations, gif) => {
   let result = []
   let layerConfigIndex = 0
   let editionCount = 1
@@ -362,11 +360,13 @@ const startCreating = async (layerConfigurations) => {
           loadedElements.push(loadLayerImg(layer))
         })
 
+        let gifBuffer = null;
+
         const nft = await Promise.all(loadedElements).then(
           (renderObjectArray) => {
             debugLogs ? console.log('Clearing canvas') : null
             ctx.clearRect(0, 0, format.width, format.height)
-            if (gif.export) {
+            if (layerConfigurations[layerConfigIndex].gif) {
               hashlipsGiffer = new HashlipsGiffer(
                 canvas,
                 ctx,
@@ -386,13 +386,14 @@ const startCreating = async (layerConfigurations) => {
                 index,
                 layerConfigurations[layerConfigIndex].layersOrder.length
               )
-              if (gif.export) {
+              if (layerConfigurations[layerConfigIndex].gif) {
                 hashlipsGiffer.add()
               }
             })
-            if (gif.export) {
-              hashlipsGiffer.stop()
+            if (layerConfigurations[layerConfigIndex].gif) {
+              gifBuffer = hashlipsGiffer.stop()
             }
+
             debugLogs
               ? console.log('Editions left to create: ', abstractedIndexes)
               : null
@@ -403,7 +404,7 @@ const startCreating = async (layerConfigurations) => {
             // saveImage(sha1(newDna));
             // saveMetaDataSingleFile(abstractedIndexes[0])
 
-            return { image: imageBase64, metadata }
+            return { image: layerConfigurations[layerConfigIndex].gif ? gifBuffer : imageBase64, metadata }
           }
         )
 

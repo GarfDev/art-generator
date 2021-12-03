@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from 'react'
 import styled from 'styled-components'
 
@@ -9,6 +10,7 @@ import { BLEND_MODE, Layer, LayerConfig } from '../core/types'
 import { ListItem } from '../core/components/ListItem'
 
 const initialLayerConfig: LayerConfig = {
+  gif: false,
   growEditionSizeTo: 5,
   archivedLayers: [],
   layersOrder: [
@@ -99,6 +101,18 @@ export default function Home() {
                   )
                 }
 
+                const onChangeUpdate = () => {
+                  const updatedLayer: LayerConfig = {
+                    ...layerConfigs[index],
+                    gif: !layerConfigs[index].gif,
+                  }
+                  setLayerConfigs(
+                    layerConfigs.map((config, innerIndex) =>
+                      innerIndex === index ? updatedLayer : config
+                    )
+                  )
+                }
+
                 const movePetListItem = (
                   dragIndex: number,
                   hoverIndex: number
@@ -141,6 +155,12 @@ export default function Home() {
                         value={config.growEditionSizeTo}
                         onChange={onGrowSizeChange}
                       />
+                      <input
+                        type="checkbox"
+                        onChange={onChangeUpdate}
+                        value={config.gif as any}
+                      />
+                      <label>GIF</label>
                     </div>
                     <h3>Active Layers</h3>
                     <div>

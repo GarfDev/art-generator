@@ -36,6 +36,7 @@ export interface Layer {
 }
 
 export interface LayerConfig {
+  gif: boolean
   growEditionSizeTo: number
   archivedLayers: Layer[]
   layersOrder: Layer[]

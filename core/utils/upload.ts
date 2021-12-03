@@ -2,10 +2,16 @@
 
 import FormData from 'form-data'
 
-export const upload = async (base64: string): Promise<string> => {
+export const upload = async (file: string | Buffer): Promise<string> => {
   const formData = new FormData()
-  formData.append('image', base64.replace('data:image/png;base64,', ''))
-  formData.append('type', 'base64')
+  formData.append(
+    'image',
+    typeof file === 'string' ? file.replace('data:image/png;base64,', '') : file
+  )
+
+  if (typeof file === 'string') {
+    formData.append('type', 'base64')
+  }
 
   const res = await fetch('https://api.imgur.com/3/image/', {
     method: 'post',
