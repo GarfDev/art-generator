@@ -27,6 +27,7 @@ export const GlobalStyle = createGlobalStyle`
   body {
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
+    font-family: 'Trebuchet MS', sans-serif;
   }
   /*
     6. Improve media defaults

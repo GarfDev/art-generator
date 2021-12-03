@@ -7,6 +7,13 @@ import { useDrag, useDrop } from 'react-dnd'
 
 import { Layer } from '../types'
 
+import { MODE } from '../../constants/blend_mode'
+
+const blendOptions = Object.keys(MODE).map((key) => ({
+  key: MODE[key],
+  label: MODE[key],
+}))
+
 interface Props {
   layer: Layer
   index: number
@@ -67,6 +74,25 @@ export const ListItem = ({
       >
         {layer.name}
       </Name>
+      <Select
+        value={layer.options.blend}
+        onChange={(event) => {
+          onLayerChange({
+            ...layer,
+            options: {
+              ...layer.options,
+              blend: event.target.value,
+            },
+          })
+        }}
+      >
+        {blendOptions.map((option) => (
+          <option key={layer.name + option.key} value={option.key}>
+            {option.label}
+          </option>
+        ))}
+      </Select>
+
       <input
         type="range"
         min={0}
@@ -88,6 +114,9 @@ export const ListItem = ({
 }
 
 const Name = styled.span`
+  margin-right: 5px;
+`
+const Select = styled.select`
   margin-right: 5px;
 `
 

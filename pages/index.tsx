@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import Head from 'next/head'
 import Image from 'next/image'
 
-import { Layer, LayerConfig } from '../core/types'
+import { BLEND_MODE, Layer, LayerConfig } from '../core/types'
 
 import { ListItem } from '../core/components/ListItem'
 
@@ -12,13 +12,22 @@ const initialLayerConfig: LayerConfig = {
   growEditionSizeTo: 5,
   archivedLayers: [],
   layersOrder: [
-    { name: 'Background', options: { opacity: 1 } },
-    { name: 'Eyeball', options: { opacity: 1 } },
-    { name: 'Eye color', options: { opacity: 1 } },
-    { name: 'Iris', options: { opacity: 1 } },
-    { name: 'Shine', options: { opacity: 1 } },
-    { name: 'Bottom lid', options: { opacity: 1 } },
-    { name: 'Top lid', options: { opacity: 1 } },
+    {
+      name: 'Background',
+      options: { blend: BLEND_MODE.sourceOver, opacity: 1 },
+    },
+    { name: 'Eyeball', options: { blend: BLEND_MODE.sourceOver, opacity: 1 } },
+    {
+      name: 'Eye color',
+      options: { blend: BLEND_MODE.sourceOver, opacity: 1 },
+    },
+    { name: 'Iris', options: { blend: BLEND_MODE.sourceOver, opacity: 1 } },
+    { name: 'Shine', options: { blend: BLEND_MODE.sourceOver, opacity: 1 } },
+    {
+      name: 'Bottom lid',
+      options: { blend: BLEND_MODE.sourceOver, opacity: 1 },
+    },
+    { name: 'Top lid', options: { blend: BLEND_MODE.sourceOver, opacity: 1 } },
   ],
 }
 

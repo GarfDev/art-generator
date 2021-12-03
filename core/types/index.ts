@@ -30,7 +30,7 @@ export enum BLEND_MODE {
 export interface Layer {
   name: string
   options: {
-    blend?: BLEND_MODE
+    blend?: string
     opacity: number
   }
 }
